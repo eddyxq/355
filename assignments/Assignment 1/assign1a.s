@@ -4,23 +4,23 @@ fmt: .string "x is %d, y is %d, current min is %d\n" 	//creates the format strin
 
 .global main			 	   	//make main visible to OS
 .balign 4				        //ensures instructions are properly aligned
-
-fp .req x29						//define register alias
-lr .req x30						//define register alias
+					
+fp .req x29					//define register alias
+lr .req x30					//define register alias
 
 main:
-	stp	 fp, lr, [sp, -16]! 	//save FP and LR to stack, pre-increment sp
-	mov	 fp, sp                	//update FP to current SP
+	stp	 fp, lr, [sp, -16]! 	    	//save FP and LR to stack, pre-increment sp
+	mov	 fp, sp                		//update FP to current SP
 
-	mov	x19, -7					//x value
-	mov	x20, 10					//y value
-	mov	x24, 99					//holds the min value
-	mov	x25, 14					//coefficient
-	mov	x26, -3					//coefficient
-	mov	x27, -9					//coefficient
+	mov	x19, -7				//x value
+	mov	x20, 10				//y value
+	mov	x24, 99				//holds the min value
+	mov	x25, 14				//coefficient
+	mov	x26, -3				//coefficient
+	mov	x27, -9				//coefficient
 
 test:
-	cmp	x19, 5					//if x > 5 
+	cmp	x19, 5				//if x > 5 
 	b.gt	exit  				//go to exit 
 
 loop:
@@ -34,23 +34,24 @@ loop:
 	add	x20, x20, x23			//y=2x^3+14x^2-3x
 	add	x20, x20, x27			//y=2x^3-14x^2-3x-9
 
-	cmp	x20, x24	            //if y > minimum
+	cmp	x20, x24	                //if y > minimum
 	b.gt	else				//go to else
-	mov	x24, x20 				//new minimum = y
+	mov	x24, x20 			//new minimum = y
 
-else:							//do nothing
-	
+else:
+						//do nothing
+               	
 print:
-	ldr	x0, =fmt				//set string as 1st argument
-	mov	x1, x19					//set x variable to 2nd argument
-	mov	x2, x20  				//set y variable to 3rd argument
-	mov	x3, x24					//set the minimum variable to 4th argument
-	bl	printf					//call printf
+	ldr	x0, =fmt			//set string as 1st argument
+	mov	x1, x19				//set x variable to 2nd argument
+	mov	x2, x20  			//set y variable to 3rd argument
+	mov	x3, x24				//set the minimum variable to 4th argument
+	bl	printf				//call printf
 
-	add	x19, x19, 1				//x+=1, increments x by 1 
-	b	test					//go to test
+	add	x19, x19, 1			//x+=1, increments x by 1 
+	b	test				//go to test
 
-exit:							//set address of string to be printed
-	mov	w0, 0 					//set up return value of 0 from main
+exit:						//set address of string to be printed
+	mov	w0, 0 				//set up return value of 0 from main
 	ldp	fp, lr, [sp], 16  		//restore FP and LR from stack, post-increment SP
-	ret                       	//return to OS
+	ret                       		//return to OS

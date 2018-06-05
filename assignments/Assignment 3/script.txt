@@ -1,0 +1,489 @@
+Script started on 2018-03-05 20:05:16-0700
+]0;eddy.qiang1@csa3:~eddy.qiang1@csa3:~$ gdb assign3
+GNU gdb (GDB) Fedora 8.0-13.fc26
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "aarch64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from assign3...done.
+(gdb) b *main
+Breakpoint 1 at 0x400614: file assign3.s, line 35.
+(gdb) b *outer_loop
+Breakpoint 2 at 0x400678: file assign3.s, line 70.
+(gdb) b *print2
+Breakpoint 3 at 0x400718: file assign3.s, line 124.
+(gdb) b *exit
+Breakpoint 4 at 0x400758: file assign3.s, line 148.
+(gdb) x/d $pc
+No registers.
+(gdb) r
+Starting program: /home/ugd/eddy.qiang1/assign3 
+
+Breakpoint 1, main () at assign3.s:35
+35		stp	fp, lr, [sp, alloc]!		//save fp and lr to stack, pre-increment sp
+(gdb) 
+(gdb) 
+(gdb) 
+(gdb) 
+(gdb) ni
+36		mov	fp, sp				//update FP to current SP
+(gdb) 
+37		str	wzr, [fp, i_s]			//initialize i to 0
+(gdb) 
+38		str	wzr, [fp, j_s]			//initialize j to 0
+(gdb) 
+39		str	wzr, [fp, max_s]		//initialize max_s to 0
+(gdb) 
+40		str	wzr, [fp, temp_s]		//initialize temp_s to 0
+(gdb) 
+loop1 () at assign3.s:43
+43		bl	rand				//call rand()
+(gdb) 
+44		and	temp, w0, 0x3FF			//rand() & 0x3FF
+(gdb) c
+Continuing.
+v[0]: 359
+v[1]: 966
+v[2]: 105
+v[3]: 115
+v[4]: 81
+v[5]: 255
+v[6]: 74
+v[7]: 236
+v[8]: 809
+v[9]: 205
+v[10]: 186
+v[11]: 939
+v[12]: 498
+v[13]: 763
+v[14]: 483
+v[15]: 326
+v[16]: 124
+v[17]: 706
+v[18]: 84
+v[19]: 1016
+v[20]: 795
+v[21]: 488
+v[22]: 487
+v[23]: 909
+v[24]: 886
+v[25]: 346
+v[26]: 302
+v[27]: 611
+v[28]: 563
+v[29]: 927
+v[30]: 201
+v[31]: 922
+v[32]: 870
+v[33]: 306
+v[34]: 13
+v[35]: 951
+v[36]: 561
+v[37]: 88
+v[38]: 163
+v[39]: 346
+v[40]: 293
+v[41]: 349
+v[42]: 261
+v[43]: 791
+v[44]: 88
+v[45]: 745
+v[46]: 94
+v[47]: 212
+v[48]: 427
+v[49]: 178
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) x/50d $fp+32
+0xfffffffff0e0:	359	966	105	115
+0xfffffffff0f0:	81	255	74	236
+0xfffffffff100:	809	205	186	939
+0xfffffffff110:	498	763	483	326
+0xfffffffff120:	124	706	84	1016
+0xfffffffff130:	795	488	487	909
+0xfffffffff140:	886	346	302	611
+0xfffffffff150:	563	927	201	922
+0xfffffffff160:	870	306	13	951
+0xfffffffff170:	561	88	163	346
+0xfffffffff180:	293	349	261	791
+0xfffffffff190:	88	745	94	212
+0xfffffffff1a0:	427	178
+(gdb) ni
+71		str 	counter, [fp, max_s]		//max = i
+(gdb) 
+72		ldr 	index, [fp, i_s]			//load i 
+(gdb) 
+73		add 	index, index, 1			//i+=1 
+(gdb) 
+74		str 	index, [fp, j_s]			//j = i + 1
+(gdb) 
+75		b 	inner_loop_test			//go to inner_loop_test
+(gdb) 
+inner_loop_test () at assign3.s:94
+94		ldr 	index, [fp, j_s]		//load j
+(gdb) 
+95		cmp 	index, SIZE			//if j < SIZE	
+(gdb) 
+96		b.lt 	inner_loop			//go to inner_loop
+(gdb) c
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) ni
+71		str 	counter, [fp, max_s]		//max = i
+(gdb) 
+72		ldr 	index, [fp, i_s]			//load i 
+(gdb) 
+73		add 	index, index, 1			//i+=1 
+(gdb) 
+74		str 	index, [fp, j_s]			//j = i + 1
+(gdb) 
+75		b 	inner_loop_test			//go to inner_loop_test
+(gdb) c
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 2, outer_loop () at assign3.s:70
+70		ldr 	counter, [fp, i_s]		//load i
+(gdb) 
+Continuing.
+
+Breakpoint 3, print2 () at assign3.s:124
+124		ldr 	x0, =fmt2			//set string to 1st argument
+(gdb) x/50d $fp+32
+0xfffffffff0e0:	1016	966	951	939
+0xfffffffff0f0:	927	922	909	886
+0xfffffffff100:	870	809	795	791
+0xfffffffff110:	763	745	706	611
+0xfffffffff120:	563	561	498	488
+0xfffffffff130:	487	483	427	359
+0xfffffffff140:	349	346	346	326
+0xfffffffff150:	306	302	293	261
+0xfffffffff160:	255	236	212	205
+0xfffffffff170:	201	186	178	163
+0xfffffffff180:	124	115	105	94
+0xfffffffff190:	88	88	84	81
+0xfffffffff1a0:	74	13
+
+Sorted array:
+v[0]: 1016
+v[1]: 966
+v[2]: 951
+v[3]: 939
+v[4]: 927
+v[5]: 922
+v[6]: 909
+v[7]: 886
+v[8]: 870
+v[9]: 809
+v[10]: 795
+v[11]: 791
+v[12]: 763
+v[13]: 745
+v[14]: 706
+v[15]: 611
+v[16]: 563
+v[17]: 561
+v[18]: 498
+v[19]: 488
+v[20]: 487
+v[21]: 483
+v[22]: 427
+v[23]: 359
+v[24]: 349
+v[25]: 346
+v[26]: 346
+v[27]: 326
+v[28]: 306
+v[29]: 302
+v[30]: 293
+v[31]: 261
+v[32]: 255
+v[33]: 236
+v[34]: 212
+v[35]: 205
+v[36]: 201
+v[37]: 186
+v[38]: 178
+v[39]: 163
+v[40]: 124
+v[41]: 115
+v[42]: 105
+v[43]: 94
+v[44]: 88
+v[45]: 88
+v[46]: 84
+v[47]: 81
+v[48]: 74
+v[49]: 13
+
+Breakpoint 4, __GI_exit (status=0) at exit.c:104
+104	{
+(gdb) 
+Continuing.
+[Inferior 1 (process 25481) exited normally]
+(gdb) 
+The program is not being run.
+(gdb) 
+The program is not being run.
+(gdb) 
+The program is not being run.
+(gdb) 
+The program is not being run.
+(gdb) 
+The program is not being run.
+(gdb) 
+The program is not being run.
+(gdb) 
+The program is not being run.
+(gdb) 
+The program is not being run.
+(gdb) 
+The program is not being run.
+(gdb) 
+The program is not being run.
+(gdb) q
+]0;eddy.qiang1@csa3:~eddy.qiang1@csa3:~$ exit
+exit
+
+Script done on 2018-03-05 20:16:13-0700
