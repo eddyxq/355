@@ -1,0 +1,272 @@
+Script started on 2018-01-30 11:42:58-0700
+]0;eddy.qiang1@csa3:~eddy.qiang1@csa3:~$ gdb assign1a
+GNU gdb (GDB) Fedora 8.0-13.fc26
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "aarch64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from assign1a...(no debugging symbols found)...done.
+(gdb) b *main
+Breakpoint 1 at 0x4005d0
+(gdb) r
+Starting program: /home/ugd/eddy.qiang1/assign1a 
+
+Breakpoint 1, 0x00000000004005d0 in main ()
+(gdb) display [K/i $pc
+1: x/i $pc
+=> 0x4005d0 <main>:	stp	x29, x30, [sp, #-16]!
+(gdb) ni
+0x00000000004005d4 in main ()
+1: x/i $pc
+=> 0x4005d4 <main+4>:	mov	x29, sp
+(gdb) 
+0x00000000004005d8 in main ()
+1: x/i $pc
+=> 0x4005d8 <main+8>:	mov	x19, #0xfffffffffffffff9    	// #-7
+(gdb) 
+0x00000000004005dc in main ()
+1: x/i $pc
+=> 0x4005dc <main+12>:	mov	x20, #0xa                   	// #10
+(gdb) 
+0x00000000004005e0 in main ()
+1: x/i $pc
+=> 0x4005e0 <main+16>:	mov	x24, #0x63                  	// #99
+(gdb) 
+0x00000000004005e4 in main ()
+1: x/i $pc
+=> 0x4005e4 <main+20>:	mov	x25, #0xe                   	// #14
+(gdb) 
+0x00000000004005e8 in main ()
+1: x/i $pc
+=> 0x4005e8 <main+24>:	mov	x26, #0xfffffffffffffffd    	// #-3
+(gdb) 
+0x00000000004005ec in main ()
+1: x/i $pc
+=> 0x4005ec <main+28>:	mov	x27, #0xfffffffffffffff7    	// #-9
+(gdb) 
+0x00000000004005f0 in test ()
+1: x/i $pc
+=> 0x4005f0 <test>:	cmp	x19, #0x5
+(gdb) p/d $x19
+$1 = -7
+(gdb) ni
+0x00000000004005f4 in test ()
+1: x/i $pc
+=> 0x4005f4 <test+4>:	b.gt	0x400644 <exit>
+(gdb) 
+0x00000000004005f8 in loop ()
+1: x/i $pc
+=> 0x4005f8 <loop>:	mul	x21, x19, x19
+(gdb) 
+0x00000000004005fc in loop ()
+1: x/i $pc
+=> 0x4005fc <loop+4>:	mul	x21, x21, x19
+(gdb) 
+0x0000000000400600 in loop ()
+1: x/i $pc
+=> 0x400600 <loop+8>:	add	x21, x21, x21
+(gdb) 
+0x0000000000400604 in loop ()
+1: x/i $pc
+=> 0x400604 <loop+12>:	mul	x22, x19, x19
+(gdb) 
+0x0000000000400608 in loop ()
+1: x/i $pc
+=> 0x400608 <loop+16>:	mul	x22, x25, x22
+(gdb) 
+0x000000000040060c in loop ()
+1: x/i $pc
+=> 0x40060c <loop+20>:	mul	x23, x26, x19
+(gdb) 
+0x0000000000400610 in loop ()
+1: x/i $pc
+=> 0x400610 <loop+24>:	add	x20, x21, x22
+(gdb) 
+0x0000000000400614 in loop ()
+1: x/i $pc
+=> 0x400614 <loop+28>:	add	x20, x20, x23
+(gdb) 
+0x0000000000400618 in loop ()
+1: x/i $pc
+=> 0x400618 <loop+32>:	add	x20, x20, x27
+(gdb) 
+0x000000000040061c in loop ()
+1: x/i $pc
+=> 0x40061c <loop+36>:	cmp	x20, x24
+(gdb) p/d $x20
+$2 = 12
+(gdb) ni
+0x0000000000400620 in loop ()
+1: x/i $pc
+=> 0x400620 <loop+40>:	b.gt	0x400628 <print>
+(gdb) 
+0x0000000000400624 in loop ()
+1: x/i $pc
+=> 0x400624 <loop+44>:	mov	x24, x20
+(gdb) p/d $x20
+$3 = 12
+(gdb) p/d $x24
+$4 = 99
+(gdb) ni
+0x0000000000400628 in print ()
+1: x/i $pc
+=> 0x400628 <print>:	ldr	x0, 0x400650 <exit+12>
+(gdb) p/d $x20
+$5 = 12
+(gdb) p/d $x24
+$6 = 12
+(gdb) ni
+0x000000000040062c in print ()
+1: x/i $pc
+=> 0x40062c <print+4>:	mov	x1, x19
+(gdb) 
+0x0000000000400630 in print ()
+1: x/i $pc
+=> 0x400630 <print+8>:	mov	x2, x20
+(gdb) 
+0x0000000000400634 in print ()
+1: x/i $pc
+=> 0x400634 <print+12>:	mov	x3, x24
+(gdb) 
+0x0000000000400638 in print ()
+1: x/i $pc
+=> 0x400638 <print+16>:	bl	0x400490 <printf@plt>
+(gdb) 
+x is -7, y is 12, current min is 12
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is -6, y is 81, current min is 12
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is -5, y is 106, current min is 12
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is -4, y is 99, current min is 12
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is -3, y is 72, current min is 12
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is -2, y is 37, current min is 12
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is -1, y is 6, current min is 6
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is 0, y is -9, current min is -9
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is 1, y is 4, current min is -9
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is 2, y is 57, current min is -9
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is 3, y is 162, current min is -9
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+x is 4, y is 331, current min is -9
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) p/d $x19
+$7 = 4
+(gdb) ni
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) p/d $x19
+$8 = 5
+(gdb) ni
+x is 5, y is 576, current min is -9
+0x000000000040063c in print ()
+1: x/i $pc
+=> 0x40063c <print+20>:	add	x19, x19, #0x1
+(gdb) 
+0x0000000000400640 in print ()
+1: x/i $pc
+=> 0x400640 <print+24>:	b	0x4005f0 <test>
+(gdb) 
+[Inferior 1 (process 26729) exited normally]
+(gdb) 
+The program is not being run.
+(gdb) q
+]0;eddy.qiang1@csa3:~eddy.qiang1@csa3:~$ exit
+exit
+
+Script done on 2018-01-30 11:46:46-0700

@@ -1,0 +1,104 @@
+Script started on 2018-03-15 17:51:46-0600
+]0;eddy.qiang1@csa2:~/a4eddy.qiang1@csa2:~/a4$ gdb assign4
+GNU gdb (GDB) Fedora 8.0-13.fc26
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "aarch64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from assign4...done.
+(gdb) b main
+Breakpoint 1 at 0x4007d8: file assign4.s, line 202.
+(gdb) b exit
+Breakpoint 2 at 0x400864: file assign4.s, line 253.
+(gdb) r
+Starting program: /home/ugd/eddy.qiang1/a4/assign4 
+
+Breakpoint 1, main () at assign4.s:202
+202		stp	fp, lr, [sp, alloc]!				//save fp and lr to stack, pre-increment sp
+(gdb) ni
+203		mov	fp, sp						//update FP to current SP
+(gdb) 
+205		add	x8, fp, first_s					//get address of first cuboid
+(gdb) 
+206		bl	newCuboid					//call newCuboid()
+(gdb) 
+208		add	x8, fp, second_s				//get address of second cuboid
+(gdb) 
+209		bl 	newCuboid					//call newCuboid()
+(gdb) 
+211		ldr	x0, =fmta					//printf ("Initial cuboid values:\n")
+(gdb) 
+212		bl	printf						//call printf
+(gdb) 
+Initial cuboid values:
+214		ldr	x0, =fmtfirst					//set string to 1st argument
+(gdb) 
+215		add	x1, fp, first_s					//set first cuboid to 2nd argument
+(gdb) 
+216		bl	printCuboid					//call printCuboid()	
+(gdb) 
+Cuboid first origin = (0, 0)
+	Base width = 2 Base length = 2
+	Height = 3
+	Volume = 12
+218		ldr	x0, =fmtsecond					//set string to 1st argument
+(gdb) x/6d $fp+16
+0xfffffffff150:	0	0	2	2
+0xfffffffff160:	3	12
+(gdb) ni
+219		add	x1, fp, second_s				//set second cuboid to 2nd argument
+(gdb) 
+220		bl	printCuboid					//call printCuboid()
+(gdb) 
+Cuboid second origin = (0, 0)
+	Base width = 2 Base length = 2
+	Height = 3
+	Volume = 12
+222		add	x6, fp, first_s					//calculate address of first
+(gdb) x/6d $fp+40
+0xfffffffff168:	0	0	2	2
+0xfffffffff178:	3	12
+(gdb) ni
+223		add	x7, fp, second_s				//calculate address of second
+(gdb) 
+224		bl	equalSize					//call equalSize()
+(gdb) 
+225		mov 	x27, x5				//store return x5
+(gdb) 
+Changed cuboid values:
+Cuboid first origin = (3, -6)
+	Base width = 2 Base length = 2
+	Height = 3
+	Volume = 12
+Cuboid second origin = (0, 0)
+	Base width = 8 Base length = 8
+	Height = 12
+	Volume = 48
+
+Breakpoint 2, __GI_exit (status=0) at exit.c:104
+104	{
+(gdb) x/d $fp[1@6
+0xfffffffff150:	3	-6	2	2
+0xfffffffff160:	3	12
+(gdb) x/6d $fp+24
+0xfffffffff168:	0	0	8	8
+0xfffffffff178:	12	768
+(gdb) ni
+105	  __run_exit_handlers (status, &__exit_funcs, true, true);
+(gdb) c
+Continuing.
+[Inferior 1 (process 28518) exited normally]
+(gdb) q
+]0;eddy.qiang1@csa2:~/a4eddy.qiang1@csa2:~/a4$ exit
+exit
+
+Script done on 2018-03-16 12:55:25-0600

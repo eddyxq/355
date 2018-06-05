@@ -1,0 +1,755 @@
+Script started on 2018-02-09 11:53:22-0700
+]0;eddy.qiang1@csa1:~/A2 355eddy.qiang1@csa1:~/A2 355$ gdb assign2a
+GNU gdb (GDB) Fedora 8.0-13.fc26
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "aarch64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from assign2a...done.
+(gdb) b *main
+Breakpoint 1 at 0x400624: file assign2a.s, line 22.
+(gdb) b *test_multiplier
+Breakpoint 2 at 0x400658: file assign2a.s, line 40.
+(gdb) b *next3
+Breakpoint 3 at 0x4006a4: file assign2a.s, line 75.
+(gdb) display/i $pc
+1: x/i $pc
+<error: No registers.>
+(gdb) r
+Starting program: /home/ugd/eddy.qiang1/A2 355/assign2a 
+
+Breakpoint 1, main () at assign2a.s:22
+22		stp	fp, lr, [sp, -16]!				//save fp and lr to stack, pre-increment sp
+1: x/i $pc
+=> 0x400624 <main>:	stp	x29, x30, [sp, #-16]!
+(gdb) ni
+23		mov	fp, sp						//update FP to current SP
+1: x/i $pc
+=> 0x400628 <main+4>:	mov	x29, sp
+(gdb) c
+Continuing.
+multiplier = 0x0000002f (47) multiplicand = 0x%08 (-16384)
+
+
+Breakpoint 2, test_multiplier () at assign2a.s:40
+40		cmp	w20, 0					//if w20 < 0
+1: x/i $pc
+=> 0x400658 <test_multiplier>:	cmp	w20, #0x0
+(gdb) si
+41		b.gt	set_negative					//go to set_negative
+1: x/i $pc
+=> 0x40065c <test_multiplier+4>:	b.gt	0x400668 <set_negative>
+(gdb) 
+set_negative () at assign2a.s:46
+46		mov	w23, 1					//set w23 to true
+1: x/i $pc
+=> 0x400668 <set_negative>:	mov	w23, #0x1                   	// #1
+(gdb) 
+47		b	test						//go to test
+1: x/i $pc
+=> 0x40066c <set_negative+4>:	b	0x40069c <test>
+(gdb) 
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) p/d $w22
+$1 = 0
+(gdb) si
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) 
+51		b.eq	next1						//go to next1
+1: x/i $pc
+=> 0x400674 <loop+4>:	b.eq	0x40067c <next1>  // b.none
+(gdb) 
+52		add	w21, w21, w19			//w21 += w19
+1: x/i $pc
+=> 0x400678 <loop+8>:	add	w21, w21, w19
+(gdb) p/d $w21
+$2 = 0
+(gdb) p/d $w19
+$3 = 4294950912
+(gdb) si
+next1 () at assign2a.s:55
+55		asr	w20, w20, 1			//w20 >>= 1
+1: x/i $pc
+=> 0x40067c <next1>:	asr	w20, w20, #1
+(gdb) p/d $w20
+$4 = 47
+(gdb) si
+56		tst	w21, 0x1					//if w21 & 0x1
+1: x/i $pc
+=> 0x400680 <next1+4>:	tst	w21, #0x1
+(gdb) p/d $w21
+$5 = 4294950912
+(gdb) si
+57		b.eq	else						//go to else
+1: x/i $pc
+=> 0x400684 <next1+8>:	b.eq	0x400690 <else>  // b.none
+(gdb) 
+else () at assign2a.s:62
+62		and	w20, w20, 0x7FFFFFFF		//w20 = w20 & 0x7FFFFFFF
+1: x/i $pc
+=> 0x400690 <else>:	and	w20, w20, #0x7fffffff
+(gdb) p/d $w20
+$6 = 23
+(gdb) si
+next2 () at assign2a.s:65
+65		asr	w21, w21, 1				//w21 >>= 1
+1: x/i $pc
+=> 0x400694 <next2>:	asr	w21, w21, #1
+(gdb) p/d $w21
+$7 = 4294950912
+(gdb) si
+update () at assign2a.s:68
+68		add	w22, w22, 1						//w22+=1, update loop counter
+1: x/i $pc
+=> 0x400698 <update>:	add	w22, w22, #0x1
+(gdb) p/d $w22
+$8 = 0
+(gdb) si
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) 
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) p/d $w20
+$9 = 23
+(gdb) si
+51		b.eq	next1						//go to next1
+1: x/i $pc
+=> 0x400674 <loop+4>:	b.eq	0x40067c <next1>  // b.none
+(gdb) 
+52		add	w21, w21, w19			//w21 += w19
+1: x/i $pc
+=> 0x400678 <loop+8>:	add	w21, w21, w19
+(gdb) p/d $w21
+$10 = 4294959104
+(gdb) si
+next1 () at assign2a.s:55
+55		asr	w20, w20, 1			//w20 >>= 1
+1: x/i $pc
+=> 0x40067c <next1>:	asr	w20, w20, #1
+(gdb) p/d $w21
+$11 = 4294942720
+(gdb) si
+56		tst	w21, 0x1					//if w21 & 0x1
+1: x/i $pc
+=> 0x400680 <next1+4>:	tst	w21, #0x1
+(gdb) 
+57		b.eq	else						//go to else
+1: x/i $pc
+=> 0x400684 <next1+8>:	b.eq	0x400690 <else>  // b.none
+(gdb) 
+else () at assign2a.s:62
+62		and	w20, w20, 0x7FFFFFFF		//w20 = w20 & 0x7FFFFFFF
+1: x/i $pc
+=> 0x400690 <else>:	and	w20, w20, #0x7fffffff
+(gdb) p/d $20
+History has not yet reached $20.
+(gdb) p/d $[Kw20
+No symbol "w20" in current context.
+(gdb) si
+next2 () at assign2a.s:65
+65		asr	w21, w21, 1				//w21 >>= 1
+1: x/i $pc
+=> 0x400694 <next2>:	asr	w21, w21, #1
+(gdb) 
+update () at assign2a.s:68
+68		add	w22, w22, 1						//w22+=1, update loop counter
+1: x/i $pc
+=> 0x400698 <update>:	add	w22, w22, #0x1
+(gdb) 
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) 
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) 
+51		b.eq	next1						//go to next1
+1: x/i $pc
+=> 0x400674 <loop+4>:	b.eq	0x40067c <next1>  // b.none
+(gdb) 
+52		add	w21, w21, w19			//w21 += w19
+1: x/i $pc
+=> 0x400678 <loop+8>:	add	w21, w21, w19
+(gdb) 
+next1 () at assign2a.s:55
+55		asr	w20, w20, 1			//w20 >>= 1
+1: x/i $pc
+=> 0x40067c <next1>:	asr	w20, w20, #1
+(gdb) 
+56		tst	w21, 0x1					//if w21 & 0x1
+1: x/i $pc
+=> 0x400680 <next1+4>:	tst	w21, #0x1
+(gdb) 
+57		b.eq	else						//go to else
+1: x/i $pc
+=> 0x400684 <next1+8>:	b.eq	0x400690 <else>  // b.none
+(gdb) 
+else () at assign2a.s:62
+62		and	w20, w20, 0x7FFFFFFF		//w20 = w20 & 0x7FFFFFFF
+1: x/i $pc
+=> 0x400690 <else>:	and	w20, w20, #0x7fffffff
+(gdb) 
+next2 () at assign2a.s:65
+65		asr	w21, w21, 1				//w21 >>= 1
+1: x/i $pc
+=> 0x400694 <next2>:	asr	w21, w21, #1
+(gdb) 
+update () at assign2a.s:68
+68		add	w22, w22, 1						//w22+=1, update loop counter
+1: x/i $pc
+=> 0x400698 <update>:	add	w22, w22, #0x1
+(gdb) 
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) 
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) 
+51		b.eq	next1						//go to next1
+1: x/i $pc
+=> 0x400674 <loop+4>:	b.eq	0x40067c <next1>  // b.none
+(gdb) 
+52		add	w21, w21, w19			//w21 += w19
+1: x/i $pc
+=> 0x400678 <loop+8>:	add	w21, w21, w19
+(gdb) 
+next1 () at assign2a.s:55
+55		asr	w20, w20, 1			//w20 >>= 1
+1: x/i $pc
+=> 0x40067c <next1>:	asr	w20, w20, #1
+(gdb) 
+56		tst	w21, 0x1					//if w21 & 0x1
+1: x/i $pc
+=> 0x400680 <next1+4>:	tst	w21, #0x1
+(gdb) 
+57		b.eq	else						//go to else
+1: x/i $pc
+=> 0x400684 <next1+8>:	b.eq	0x400690 <else>  // b.none
+(gdb) 
+else () at assign2a.s:62
+62		and	w20, w20, 0x7FFFFFFF		//w20 = w20 & 0x7FFFFFFF
+1: x/i $pc
+=> 0x400690 <else>:	and	w20, w20, #0x7fffffff
+(gdb) 
+next2 () at assign2a.s:65
+65		asr	w21, w21, 1				//w21 >>= 1
+1: x/i $pc
+=> 0x400694 <next2>:	asr	w21, w21, #1
+(gdb) 
+update () at assign2a.s:68
+68		add	w22, w22, 1						//w22+=1, update loop counter
+1: x/i $pc
+=> 0x400698 <update>:	add	w22, w22, #0x1
+(gdb) 
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) 
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) 
+51		b.eq	next1						//go to next1
+1: x/i $pc
+=> 0x400674 <loop+4>:	b.eq	0x40067c <next1>  // b.none
+(gdb) c
+Continuing.
+
+Breakpoint 3, next3 () at assign2a.s:75
+75		cmp	w23, 0					//if negative
+1: x/i $pc
+=> 0x4006a4 <next3>:	cmp	w23, #0x0
+(gdb) ni
+76		b.ne	print_product_and_multiplier			//go to print_product_and_multiplier
+1: x/i $pc
+=> 0x4006a8 <next3+4>:	b.ne	0x4006b0 <print_product_and_multiplier>  // b.any
+(gdb) 
+print_product_and_multiplier () at assign2a.s:80
+80		ldr	x0, =fmt2					//set string to 1st argument
+1: x/i $pc
+=> 0x4006b0 <print_product_and_multiplier>:	ldr	x0, 0x4006f8 <exit+20>
+(gdb) 
+81		mov	w1, w21					//set w21 to 2nd argument
+1: x/i $pc
+=> 0x4006b4 <print_product_and_multiplier+4>:	mov	w1, w21
+(gdb) 
+82		mov	w2, w20					//set w20 to 3rd argument
+1: x/i $pc
+=> 0x4006b8 <print_product_and_multiplier+8>:	mov	w2, w20
+(gdb) 
+83		bl	printf						//call printf
+1: x/i $pc
+=> 0x4006bc <print_product_and_multiplier+12>:	bl	0x400490 <printf@plt>
+(gdb) 
+product = 0xffffffff multiplier = 0xfff44000
+64-bit result = 0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000fff44000 (-770048)
+[Inferior 1 (process 30584) exited normally]
+(gdb) q
+]0;eddy.qiang1@csa1:~/A2 355eddy.qiang1@csa1:~/A2 355$ exit
+exit
+
+Script done on 2018-02-09 12:00:48-0700
+>:	add	w21, w21, w19
+(gdb) 
+next1 () at assign2a.s:55
+55		asr	w20, w20, 1			//w20 >>= 1
+1: x/i $pc
+=> 0x40067c <next1>:	asr	w20, w20, #1
+(gdb) 
+56		tst	w21, 0x1					//if w21 & 0x1
+1: x/i $pc
+=> 0x400680 <next1+4>:	tst	w21, #0x1
+(gdb) 
+57		b.eq	else						//go to else
+1: x/i $pc
+=> 0x400684 <next1+8>:	b.eq	0x400690 <else>  // b.none
+(gdb) 
+else () at assign2a.s:62
+62		and	w20, w20, 0x7FFFFFFF		//w20 = w20 & 0x7FFFFFFF
+1: x/i $pc
+=> 0x400690 <else>:	and	w20, w20, #0x7fffffff
+(gdb) 
+next2 () at assign2a.s:65
+65		asr	w21, w21, 1				//w21 >>= 1
+1: x/i $pc
+=> 0x400694 <next2>:	asr	w21, w21, #1
+(gdb) 
+update () at assign2a.s:68
+68		add	w22, w22, 1						//w22+=1, update loop counter
+1: x/i $pc
+=> 0x400698 <update>:	add	w22, w22, #0x1
+(gdb) 
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) 
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) q
+A debugging session is active.
+
+	Inferior 1 [process 30435] will be killed.
+
+Quit anyway? (y or n) c[Ky
+]0;eddy.qiang1@csa1:~/A2 355eddy.qiang1@csa1:~/A2 355$ clear
+[3J[H[2J]0;eddy.qiang1@csa1:~/A2 355eddy.qiang1@csa1:~/A2 355$ cleargdb assign2a[8Pexitgdb assign2a[8Pexitgdb assign2a[8Pexitgdb assign2als[Kpwdvi assign2a.asm[5P./assign2agcc -o assign2a assign2a.s -g[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pm4 assign2a.asm>assign2a.s[11Pvi assign2a.asm[10Pclear./assign2agcc -o assign2a assign2a.s -g[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pm4 assign2a.asm>assign2a.s[11Pvi assign2a.asm1b.asm2a.asm[5P./assign2agcc -o assign2a assign2a.s -g[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pm4 assign2a.asm>assign2a.s[11Pvi assign2a.asm[5P./assign2agcc -o assign2a assign2a.s -g[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pm4 assign2a.asm>assign2a.s[11Pvi assign2a.asm[5P./assign2agcc -o assign2a assign2a.s -g[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pm4 assign2a.asm>assign2a.s[11Pvi assign2a.asm[5P./assign2agcc -o assign2a assign2a.s -gc c.c[Km4 assign2a.asm>assign2a.s[11Pvi assign2a.asm1b.asm2a.asm[5P./assign2a[K[K[K[K[K[K[K[K[K[Kscript script.txt
+Script started, file is script.txt
+]0;eddy.qiang1@csa1:~/A2 355eddy.qiang1@csa1:~/A2 355$ gdb assign2a
+GNU gdb (GDB) Fedora 8.0-13.fc26
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "aarch64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from assign2a...done.
+(gdb) b *main
+Breakpoint 1 at 0x400624: file assign2a.s, line 22.
+(gdb) b *test_multiplier
+Breakpoint 2 at 0x400658: file assign2a.s, line 40.
+(gdb) b *next3
+Breakpoint 3 at 0x4006a4: file assign2a.s, line 75.
+(gdb) display/i $pc
+1: x/i $pc
+<error: No registers.>
+(gdb) r
+Starting program: /home/ugd/eddy.qiang1/A2 355/assign2a 
+
+Breakpoint 1, main () at assign2a.s:22
+22		stp	fp, lr, [sp, -16]!				//save fp and lr to stack, pre-increment sp
+1: x/i $pc
+=> 0x400624 <main>:	stp	x29, x30, [sp, #-16]!
+(gdb) ni
+23		mov	fp, sp						//update FP to current SP
+1: x/i $pc
+=> 0x400628 <main+4>:	mov	x29, sp
+(gdb) c
+Continuing.
+multiplier = 0x0000002f (47) multiplicand = 0x%08 (-16384)
+
+
+Breakpoint 2, test_multiplier () at assign2a.s:40
+40		cmp	w20, 0					//if w20 < 0
+1: x/i $pc
+=> 0x400658 <test_multiplier>:	cmp	w20, #0x0
+(gdb) si
+41		b.gt	set_negative					//go to set_negative
+1: x/i $pc
+=> 0x40065c <test_multiplier+4>:	b.gt	0x400668 <set_negative>
+(gdb) 
+set_negative () at assign2a.s:46
+46		mov	w23, 1					//set w23 to true
+1: x/i $pc
+=> 0x400668 <set_negative>:	mov	w23, #0x1                   	// #1
+(gdb) 
+47		b	test						//go to test
+1: x/i $pc
+=> 0x40066c <set_negative+4>:	b	0x40069c <test>
+(gdb) 
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) p/d $w22
+$1 = 0
+(gdb) si
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) 
+51		b.eq	next1						//go to next1
+1: x/i $pc
+=> 0x400674 <loop+4>:	b.eq	0x40067c <next1>  // b.none
+(gdb) 
+52		add	w21, w21, w19			//w21 += w19
+1: x/i $pc
+=> 0x400678 <loop+8>:	add	w21, w21, w19
+(gdb) p/d $w21
+$2 = 0
+(gdb) p/d $w19
+$3 = 4294950912
+(gdb) si
+next1 () at assign2a.s:55
+55		asr	w20, w20, 1			//w20 >>= 1
+1: x/i $pc
+=> 0x40067c <next1>:	asr	w20, w20, #1
+(gdb) p/d $w20
+$4 = 47
+(gdb) si
+56		tst	w21, 0x1					//if w21 & 0x1
+1: x/i $pc
+=> 0x400680 <next1+4>:	tst	w21, #0x1
+(gdb) p/d $w21
+$5 = 4294950912
+(gdb) si
+57		b.eq	else						//go to else
+1: x/i $pc
+=> 0x400684 <next1+8>:	b.eq	0x400690 <else>  // b.none
+(gdb) 
+else () at assign2a.s:62
+62		and	w20, w20, 0x7FFFFFFF		//w20 = w20 & 0x7FFFFFFF
+1: x/i $pc
+=> 0x400690 <else>:	and	w20, w20, #0x7fffffff
+(gdb) p/d $w20
+$6 = 23
+(gdb) si
+next2 () at assign2a.s:65
+65		asr	w21, w21, 1				//w21 >>= 1
+1: x/i $pc
+=> 0x400694 <next2>:	asr	w21, w21, #1
+(gdb) p/d $w21
+$7 = 4294950912
+(gdb) si
+update () at assign2a.s:68
+68		add	w22, w22, 1						//w22+=1, update loop counter
+1: x/i $pc
+=> 0x400698 <update>:	add	w22, w22, #0x1
+(gdb) p/d $w22
+$8 = 0
+(gdb) si
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                :65
+65		asr	w21, w21, 1				//w21 >>= 1
+1: x/i $pc
+=> 0x400694 <next2>:	asr	w21, w21, #1
+(gdb) 
+update () at assign2a.s:68
+68		add	w22, w22, 1						//w22+=1, update loop counter
+1: x/i $pc
+=> 0x400698 <update>:	add	w22, w22, #0x1
+(gdb) 
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) 
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) q
+A debugging session is active.
+
+	Inferior 1 [process 30435] will be killed.
+
+Quit anyway? (y or n) c[Ky
+]0;eddy.qiang1@csa1:~/A2 355eddy.qiang1@csa1:~/A2 355$ clear
+[3J[H[2J]0;eddy.qiang1@csa1:~/A2 355eddy.qiang1@csa1:~/A2 355$ cleargdb assign2a[8Pexitgdb assign2a[8Pexitgdb assign2a[8Pexitgdb assign2als[Kpwdvi assign2a.asm[5P./assign2agcc -o assign2a assign2a.s -g[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pm4 assign2a.asm>assign2a.s[11Pvi assign2a.asm[10Pclear./assign2agcc -o assign2a assign2a.s -g[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pm4 assign2a.asm>assign2a.s[11Pvi assign2a.asm1b.asm2a.asm[5P./assign2agcc -o assign2a assign2a.s -g[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pm4 assign2a.asm>assign2a.s[11Pvi assign2a.asm[5P./assign2agcc -o assign2a assign2a.s -g[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pm4 assign2a.asm>assign2a.s[11Pvi assign2a.asm[5P./assign2agcc -o assign2a assign2a.s -g[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pm4 assign2a.asm>assign2a.s[11Pvi assign2a.asm[5P./assign2agcc -o assign2a assign2a.s -gc c.c[Km4 assign2a.asm>assign2a.s[11Pvi assign2a.asm1b.asm2a.asm[5P./assign2a[K[K[K[K[K[K[K[K[K[Kscript script.txt
+Script started, file is script.txt
+]0;eddy.qiang1@csa1:~/A2 355eddy.qiang1@csa1:~/A2 355$ gdb assign2a
+GNU gdb (GDB) Fedora 8.0-13.fc26
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "aarch64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from assign2a...done.
+(gdb) b *main
+Breakpoint 1 at 0x400624: file assign2a.s, line 22.
+(gdb) b *test_multiplier
+Breakpoint 2 at 0x400658: file assign2a.s, line 40.
+(gdb) b *next3
+Breakpoint 3 at 0x4006a4: file assign2a.s, line 75.
+(gdb) display/i $pc
+1: x/i $pc
+<error: No registers.>
+(gdb) r
+Starting program: /home/ugd/eddy.qiang1/A2 355/assign2a 
+
+Breakpoint 1, main () at assign2a.s:22
+22		stp	fp, lr, [sp, -16]!				//save fp and lr to stack, pre-increment sp
+1: x/i $pc
+=> 0x400624 <main>:	stp	x29, x30, [sp, #-16]!
+(gdb) ni
+23		mov	fp, sp						//update FP to current SP
+1: x/i $pc
+=> 0x400628 <main+4>:	mov	x29, sp
+(gdb) c
+Continuing.
+multiplier = 0x0000002f (47) multiplicand = 0x%08 (-16384)
+
+
+Breakpoint 2, test_multiplier () at assign2a.s:40
+40		cmp	w20, 0					//if w20 < 0
+1: x/i $pc
+=> 0x400658 <test_multiplier>:	cmp	w20, #0x0
+(gdb) si
+41		b.gt	set_negative					//go to set_negative
+1: x/i $pc
+=> 0x40065c <test_multiplier+4>:	b.gt	0x400668 <set_negative>
+(gdb) 
+set_negative () at assign2a.s:46
+46		mov	w23, 1					//set w23 to true
+1: x/i $pc
+=> 0x400668 <set_negative>:	mov	w23, #0x1                   	// #1
+(gdb) 
+47		b	test						//go to test
+1: x/i $pc
+=> 0x40066c <set_negative+4>:	b	0x40069c <test>
+(gdb) 
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) p/d $w22
+$1 = 0
+(gdb) si
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) 
+51		b.eq	next1						//go to next1
+1: x/i $pc
+=> 0x400674 <loop+4>:	b.eq	0x40067c <next1>  // b.none
+(gdb) 
+52		add	w21, w21, w19			//w21 += w19
+1: x/i $pc
+=> 0x400678 <loop+8>:	add	w21, w21, w19
+(gdb) p/d $w21
+$2 = 0
+(gdb) p/d $w19
+$3 = 4294950912
+(gdb) si
+next1 () at assign2a.s:55
+55		asr	w20, w20, 1			//w20 >>= 1
+1: x/i $pc
+=> 0x40067c <next1>:	asr	w20, w20, #1
+(gdb) p/d $w20
+$4 = 47
+(gdb) si
+56		tst	w21, 0x1					//if w21 & 0x1
+1: x/i $pc
+=> 0x400680 <next1+4>:	tst	w21, #0x1
+(gdb) p/d $w21
+$5 = 4294950912
+(gdb) si
+57		b.eq	else						//go to else
+1: x/i $pc
+=> 0x400684 <next1+8>:	b.eq	0x400690 <else>  // b.none
+(gdb) 
+else () at assign2a.s:62
+62		and	w20, w20, 0x7FFFFFFF		//w20 = w20 & 0x7FFFFFFF
+1: x/i $pc
+=> 0x400690 <else>:	and	w20, w20, #0x7fffffff
+(gdb) p/d $w20
+$6 = 23
+(gdb) si
+next2 () at assign2a.s:65
+65		asr	w21, w21, 1				//w21 >>= 1
+1: x/i $pc
+=> 0x400694 <next2>:	asr	w21, w21, #1
+(gdb) p/d $w21
+$7 = 4294950912
+(gdb) si
+update () at assign2a.s:68
+68		add	w22, w22, 1						//w22+=1, update loop counter
+1: x/i $pc
+=> 0x400698 <update>:	add	w22, w22, #0x1
+(gdb) p/d $w22
+$8 = 0
+(gdb) si
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) 
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) p/d $w20
+$9 = 23
+(gdb) si
+51		b.eq	next1						//go to next1
+1: x/i $pc
+=> 0x400674 <loop+4>:	b.eq	0x40067c <next1>  // b.none
+(gdb) 
+52		add	w21, w21, w19			//w21 += w19
+1: x/i $pc
+=> 0x400678 <loop+8>:	add	w21, w21, w19
+(gdb) p/d $w21
+$10 = 4294959104
+(gdb) si
+next1 () at assign2a.s:55
+55		asr	w20, w20, 1			//w20 >>= 1
+1: x/i $pc
+=> 0x40067c <next1>:	asr	w20, w20, #1
+(gdb) p/d $w21
+$11 = 4294942720
+(gdb) si
+56		tst	w21, 0x1					//if w21 & 0x1
+1: x/i $pc
+=> 0x400680 <next1+4>:	tst	w21, #0x1
+(gdb) 
+57		b.eq	else						//go to else
+1: x/i $pc
+=> 0x400684 <next1+8>:	b.eq	0x400690 <else>  // b.none
+(gdb) 
+else () at assign2a.s:62
+62		and	w20, w20, 0x7FFFFFFF		//w20 = w20 & 0x7FFFFFFF
+1: x/i $pc
+=> 0x400690 <else>:	and	w20, w20, #0x7fffffff
+(gdb) p/d $20
+History has not yet reached $20.
+(gdb) p/d $[Kw20
+No symbol "w20" in current context.
+(gdb) si
+next2 () at assign2a.s:65
+65		asr	w21, w21, 1				//w21 >>= 1
+1: x/i $pc
+=> 0x400694 <next2>:	asr	w21, w21, #1
+(gdb) 
+update () at assign2a.s:68
+68		add	w22, w22, 1						//w22+=1, update loop counter
+1: x/i $pc
+=> 0x400698 <update>:	add	w22, w22, #0x1
+(gdb) 
+test () at assign2a.s:71
+71		cmp	w22, 32						//if w22 < 32
+1: x/i $pc
+=> 0x40069c <test>:	cmp	w22, #0x20
+(gdb) 
+72		b.lt	loop						//go to loop
+1: x/i $pc
+=> 0x4006a0 <test+4>:	b.lt	0x400670 <loop>  // b.tstop
+(gdb) 
+loop () at assign2a.s:50
+50		tst	w20, 0x1					//compare w20 with immediate 1
+1: x/i $pc
+=> 0x400670 <loop>:	tst	w20, #0x1
+(gdb) 
+51		b.eq	next1						//go to next1
+1: x/i $pc
+=> 0x400674 <loop+4>:	b.eq	0x40067c <next1>  // b.none
+(gdb) 
+52		add	w21, w21, w19			/

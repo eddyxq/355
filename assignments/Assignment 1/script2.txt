@@ -1,0 +1,61 @@
+Script started on 2018-01-30 11:52:06-0700
+]0;eddy.qiang1@csa3:~eddy.qiang1@csa3:~$ gdb assign1b
+GNU gdb (GDB) Fedora 8.0-13.fc26
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "aarch64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from assign1b...done.
+(gdb) b *m [Kan[Kin
+Breakpoint 1 at 0x4005d0: file assign1b.s, line 20.
+(gdb) display/i $pc
+1: x/i $pc
+<error: No registers.>
+(gdb) b *main[K[K[K[Kexit
+Breakpoint 2 at 0x400634: file assign1b.s, line 59.
+(gdb) r
+Starting program: /home/ugd/eddy.qiang1/assign1b 
+
+Breakpoint 1, main () at assign1b.s:20
+20		stp	fp, lr, [sp, -16]!     		//save FP and LR to stack, pre-increment sp
+1: x/i $pc
+=> 0x4005d0 <main>:	stp	x29, x30, [sp, #-16]!
+(gdb) c
+Continuing.
+x is -7, y is 12, current min is 12
+x is -6, y is 81, current min is 12
+x is -5, y is 106, current min is 12
+x is -4, y is 99, current min is 12
+x is -3, y is 72, current min is 12
+x is -2, y is 37, current min is 12
+x is -1, y is 6, current min is 6
+x is 0, y is -9, current min is -9
+x is 1, y is 4, current min is -9
+x is 2, y is 57, current min is -9
+x is 3, y is 162, current min is -9
+x is 4, y is 331, current min is -9
+x is 5, y is 576, current min is -9
+
+Breakpoint 2, __GI_exit (status=0) at exit.c:104
+104	{
+1: x/i $pc
+=> 0xffffb7e36d50 <__GI_exit>:	stp	x29, x30, [sp, #-16]!
+(gdb) p/d $x24
+$1 = -9
+(gdb) c
+Continuing.
+[Inferior 1 (process 27328) exited normally]
+(gdb) q
+]0;eddy.qiang1@csa3:~eddy.qiang1@csa3:~$ exit
+exit
+
+Script done on 2018-01-30 11:53:39-0700
